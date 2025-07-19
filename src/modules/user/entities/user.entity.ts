@@ -31,6 +31,6 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   deleted_by: string;
 
-  @OneToOne(() => CustomerEntity, user => user.id)
+  @OneToOne(() => CustomerEntity, customer => customer.user)
   customers: CustomerEntity;
 }

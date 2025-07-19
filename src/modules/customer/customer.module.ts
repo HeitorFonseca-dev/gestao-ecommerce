@@ -5,11 +5,16 @@ import { JwtStrategy } from '../../../auth-lib/src/strategy/jwt.strategy';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../user/entities/user.entity';
 import { CustomerService } from './services/customer.service';
+import { CustomerController } from './controller/customer.controller';
+import { CustomerEntity } from './entities/customer.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity]), DatabaseModule],
-  controllers: [UsersController],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, CustomerEntity]),
+    DatabaseModule,
+  ],
+  controllers: [CustomerController],
   providers: [CustomerService, JwtStrategy, JwtService],
   exports: [CustomerService],
 })
-export class UsersModule {}
+export class CustomerModule {}

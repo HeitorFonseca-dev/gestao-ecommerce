@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { UserEntity } from './modules/user/entities/user.entity';
 import { UsersModule } from './modules/user/user.module';
 import { CustomerEntity } from './modules/customer/entities/customer.entity';
+import { CustomerModule } from './modules/customer/customer.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CustomerEntity } from './modules/customer/entities/customer.entity';
     // AuthModule,
     UsersModule,
     DatabaseModule,
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

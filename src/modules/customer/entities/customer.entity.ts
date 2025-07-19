@@ -1,10 +1,11 @@
-import { Entity, Column, OneToOne } from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
 import { BaseEntity } from '../../../database/base/base.entity';
 
-@Entity('customers')
+@Entity('customer')
 export class CustomerEntity extends BaseEntity {
   @OneToOne(() => UserEntity, { eager: true, nullable: false })
+  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
   @Column({ name: 'name', type: 'varchar', length: 255 })

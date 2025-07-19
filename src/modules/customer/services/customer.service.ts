@@ -30,7 +30,6 @@ export class CustomerService {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-
     try {
       const user = await this._userRepository.findOne({
         where: { id: dto.userId },
@@ -40,7 +39,11 @@ export class CustomerService {
         throw new Error('Usuário nao encontrado');
       }
 
-      const customer = this._customerRepository.create(dto);
+      const customer = this._customerRepository.create({
+        ...dto,
+        user,
+      });
+
       const savedCustomer = await queryRunner.manager.save(
         CustomerEntity,
         customer,

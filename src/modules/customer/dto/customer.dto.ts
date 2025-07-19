@@ -4,13 +4,14 @@ import {
   IsBoolean,
   IsOptional,
   MaxLength,
+  IsInt,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCustomerDto {
-  @ApiProperty({ description: 'User ID (UUID)' })
-  @IsUUID()
-  userId: string;
+  @ApiProperty({ description: 'User ID (integer)' })
+  @IsInt()
+  userId: number;
 
   @ApiProperty({ description: 'Full name of the customer', maxLength: 255 })
   @IsString()
