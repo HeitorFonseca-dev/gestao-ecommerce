@@ -3,15 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   HttpStatus,
+  NotFoundException,
   Param,
   Patch,
   Post,
   Query,
-  Headers,
-  HttpException,
-  ParseUUIDPipe,
-  NotFoundException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
@@ -32,10 +30,7 @@ export class UsersController {
   ) {}
 
   @Post()
-  async create(
-    @Body() createUserDto: CreateUserDto,
-    @Headers() headers,
-  ): Promise<ResponseAPI> {
+  async create(@Body() dto: CreateUserDto): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
     // const metaToken = await this._jwtService.extractToken(
@@ -47,7 +42,7 @@ export class UsersController {
     // }
 
     try {
-      const users = await this._usersService.create(createUserDto);
+      const users = await this._usersService.create(dto);
 
       response.data = users;
       response.message = 'Usuário criado com sucesso!';

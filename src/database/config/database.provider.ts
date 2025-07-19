@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
+import { UserEntity } from '../../modules/user/entities/user.entity';
+import { CustomerEntity } from '../../modules/customer/entities/customer.entity';
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -13,7 +15,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: process.env.CERT ? { ca: process.env.CERT } : false,
-  entities: [],
+  entities: [UserEntity, CustomerEntity],
   migrations: ['dist/src/database/migrations/**/*.js'],
   logging: process.env.LOGGING === 'true',
 });
