@@ -8,6 +8,8 @@ import { UserEntity } from './modules/user/entities/user.entity';
 import { UsersModule } from './modules/user/user.module';
 import { CustomerEntity } from './modules/customer/entities/customer.entity';
 import { CustomerModule } from './modules/customer/customer.module';
+import { ProductEntity } from './modules/product/entities/product.entity';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { CustomerModule } from './modules/customer/customer.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [UserEntity, CustomerEntity],
+      entities: [UserEntity, CustomerEntity, ProductEntity],
       synchronize: false,
       logging: false,
       ssl: false,
@@ -32,6 +34,7 @@ import { CustomerModule } from './modules/customer/customer.module';
     UsersModule,
     DatabaseModule,
     CustomerModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
