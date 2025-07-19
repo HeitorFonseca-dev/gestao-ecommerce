@@ -1,4 +1,3 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
@@ -15,6 +14,7 @@ import { CreateUserDto, UpdateUserDTO } from '../dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { TokenJWTPayload } from '../../../../auth-lib/src/dto/token-jwt-payload.dto';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 export class UsersService {
   constructor(

@@ -1,13 +1,8 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne } from 'typeorm';
 import { BaseEntity } from '../../../database/base/base.entity';
 import { Profiles } from '../enum/profiles.enum';
 import { Exclude } from 'class-transformer';
+import { CustomerEntity } from '../../customer/entities/customer.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -35,4 +30,7 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'varchar', nullable: true })
   deleted_by: string;
+
+  @OneToOne(() => CustomerEntity, user => user.id)
+  customers: CustomerEntity;
 }
