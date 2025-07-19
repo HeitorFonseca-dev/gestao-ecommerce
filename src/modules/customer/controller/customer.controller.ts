@@ -12,12 +12,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CustomerService } from '../services/customer.service';
 import { instanceToPlain } from 'class-transformer';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dto/customer.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
+import { CustomerService } from '../services/customer.service';
 
 @ApiTags('customer')
 @Controller('customer')
