@@ -20,4 +20,10 @@ export abstract class BaseEntity {
 
   @Column({ name: 'updated_by', nullable: true })
   updated_by?: string;
+
+  @Column({ name: 'deleted_at', nullable: true })
+  deleted_at?: Date;
+
+  @Column({ name: 'deleted_by', nullable: true })
+  deleted_by?: string;
 }
