@@ -10,6 +10,9 @@ import { CustomerEntity } from './modules/customer/entities/customer.entity';
 import { CustomerModule } from './modules/customer/customer.module';
 import { ProductEntity } from './modules/product/entities/product.entity';
 import { ProductModule } from './modules/product/product.module';
+import { OrderModule } from './modules/order/order.module';
+import { OrderEntity } from './modules/order/entities/order.entity';
+import { OrderItemsEntity } from './modules/order/order-items/entities/order-items.entity';
 
 @Module({
   imports: [
@@ -21,11 +24,17 @@ import { ProductModule } from './modules/product/product.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT ?? '25060', 10),
+      port: parseInt(process.env.DATABASE_PORT ?? '5432', 10),
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [UserEntity, CustomerEntity, ProductEntity],
+      entities: [
+        UserEntity,
+        CustomerEntity,
+        ProductEntity,
+        OrderEntity,
+        OrderItemsEntity,
+      ],
       synchronize: false,
       logging: false,
       ssl: false,
@@ -35,6 +44,7 @@ import { ProductModule } from './modules/product/product.module';
     DatabaseModule,
     CustomerModule,
     ProductModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
