@@ -5,7 +5,7 @@ import { OrderEntity } from '../../entities/order.entity';
 
 @Entity('order_items')
 export class OrderItemsEntity extends BaseEntity {
-  @ManyToOne(() => OrderEntity, { eager: true, nullable: false })
+  @ManyToOne(() => OrderEntity, { nullable: false })
   @JoinColumn({ name: 'order_id' })
   order: OrderEntity;
 

@@ -20,7 +20,6 @@ export class OrderService {
     await queryRunner.startTransaction();
 
     try {
-      console.log(dto);
       const customer = await queryRunner.manager.findOne(CustomerEntity, {
         where: { id: dto.customer_id },
       });
@@ -67,9 +66,23 @@ export class OrderService {
       order.total_amount = totalAmount;
       await queryRunner.manager.save(OrderEntity, order);
 
+      const fullOrder = await queryRunner.manager.findOne(OrderEntity, {
+        where: { id: order.id },
+        relations: [
+          'orderItems',
+          'orderItems.product',
+          'customer',
+          'customer.user',
+        ],
+      });
+
+      if (!fullOrder) {
+        throw new Error('Order not found');
+      }
+
       await queryRunner.commitTransaction();
 
-      return order;
+      return fullOrder;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
