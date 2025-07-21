@@ -41,3 +41,18 @@ export class CreateOrderDto {
   @Type(() => CreateOrderProduct)
   products: CreateOrderProduct[];
 }
+
+export class UpdateOrderDto extends CreateOrderDto {
+  @ApiProperty({ description: 'Order ID' })
+  @IsOptional()
+  customer_id: number;
+
+  @ApiProperty({
+    description: 'Products of the order',
+    type: [CreateOrderProduct],
+  })
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateOrderProduct)
+  products: CreateOrderProduct[];
+}

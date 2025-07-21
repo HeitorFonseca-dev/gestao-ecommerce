@@ -1,7 +1,7 @@
 export enum OrderStatus {
   Received = 'RECEIVED',
   InPreparation = 'IN PREPARATION',
-  Canceled = 'CANCELLED',
+  Cancelled = 'CANCELLED',
   Dispatched = 'DISPATCHED',
   Delivered = 'DELIVERED',
 }
