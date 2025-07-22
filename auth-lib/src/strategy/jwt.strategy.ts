@@ -36,6 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       .then((tokenDecoded: TokenJWTPayload) => tokenDecoded)
       .catch(() => null);
   }
+<<<<<<< HEAD
 
   async validContextTenant(storeId: string, metaToken: TokenJWTPayload) {
     const isConstructor = metaToken.roles?.some((role) => role.description === 'CONSTRUCTOR_ADMIN');
@@ -51,4 +52,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       );
     }
   }
+=======
+>>>>>>> master
 }
