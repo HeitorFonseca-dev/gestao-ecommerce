@@ -45,18 +45,12 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "crypto-js": "^4.2.0",
-<<<<<<< HEAD
-=======
     "csv-writer": "^1.6.0",
->>>>>>> master
     "dotenv": "^16.5.0",
     "handlebars": "^4.7.8",
     "iconv-lite": "^0.6.3",
     "ioredis": "^5.6.1",
-<<<<<<< HEAD
-=======
     "lodash": "^4.17.21",
->>>>>>> master
     "nodemailer": "^6.10.1",
     "nodemailer-express-handlebars": "^7.0.0",
     "nodemailer-handlebars": "^1.0.1",
@@ -114,7 +108,7 @@
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.15",
     "tsconfig-paths": "^4.2.0",
-    "typeorm": "^0.3.22",
+    "typeorm": "^0.3.25",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.20.0"
   }
