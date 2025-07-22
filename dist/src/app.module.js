@@ -24,6 +24,7 @@ const order_module_1 = require("./modules/order/order.module");
 const order_entity_1 = require("./modules/order/entities/order.entity");
 const order_items_entity_1 = require("./modules/order/order-items/entities/order-items.entity");
 const reports_module_1 = require("./modules/reports/reports.module");
+const auth_module_1 = require("../auth-lib/src/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -51,6 +52,7 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: false,
                 logging: false,
             }),
+            auth_module_1.AuthModule,
             database_module_1.DatabaseModule,
             user_module_1.UsersModule,
             database_module_1.DatabaseModule,
