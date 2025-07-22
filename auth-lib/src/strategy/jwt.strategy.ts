@@ -36,22 +36,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       .then((tokenDecoded: TokenJWTPayload) => tokenDecoded)
       .catch(() => null);
   }
-<<<<<<< HEAD
-
-  async validContextTenant(storeId: string, metaToken: TokenJWTPayload) {
-    const isConstructor = metaToken.roles?.some((role) => role.description === 'CONSTRUCTOR_ADMIN');
-
-    if (isConstructor) {
-      return; // libera o acesso sem validar o storeId
-    }
-
-    if (!metaToken.store?.some((store) => store.id === storeId)) {
-      throw new HttpException(
-        'Operação não permitida. Assinatura fora do contexto.',
-        HttpStatus.FORBIDDEN,
-      );
-    }
-  }
-=======
->>>>>>> master
 }
