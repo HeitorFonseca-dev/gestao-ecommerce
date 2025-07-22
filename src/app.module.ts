@@ -13,6 +13,7 @@ import { ProductModule } from './modules/product/product.module';
 import { OrderModule } from './modules/order/order.module';
 import { OrderEntity } from './modules/order/entities/order.entity';
 import { OrderItemsEntity } from './modules/order/order-items/entities/order-items.entity';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { OrderItemsEntity } from './modules/order/order-items/entities/order-ite
     CustomerModule,
     ProductModule,
     OrderModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
