@@ -57,11 +57,8 @@ export class UsersController {
   }
 
   @Get()
-<<<<<<< HEAD
   @Profiles(Profile.Admin)
-=======
   @ApiQuery({ type: QueryParamsDTO })
->>>>>>> master
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
     @Headers() headers,

@@ -20,13 +20,9 @@ import { OrderEntity } from './modules/order/entities/order.entity';
 import { OrderItemsEntity } from './modules/order/order-items/entities/order-items.entity';
 import { ReportsModule } from './modules/reports/reports.module';
 import { AuthModule } from '../auth-lib/src/auth.module';
-<<<<<<< HEAD
 import { APP_GUARD } from '@nestjs/core';
 import { ProfileGuard } from './guards/profile.guard';
 import { JwtStrategy } from '../auth-lib/src/strategy/jwt.strategy';
-=======
-import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
->>>>>>> master
 
 @Module({
   imports: [
