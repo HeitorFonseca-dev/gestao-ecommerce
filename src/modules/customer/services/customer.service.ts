@@ -14,6 +14,7 @@ import { QueryParamsDTO } from '../dto/queryParams.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { NotFoundException } from '@nestjs/common';
 import { HashToolsUtils } from '../../../utils/hashTools.util';
+import { TokenJWTPayload } from '../../../../auth-lib/src/dto/token-jwt-payload.dto';
 
 export class CustomerService {
   constructor(
@@ -26,7 +27,7 @@ export class CustomerService {
     private _datasource: DataSource,
   ) {}
 
-  async create(dto: CreateCustomerDto) {
+  async create(dto: CreateCustomerDto, metaToken: TokenJWTPayload) {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -42,6 +43,7 @@ export class CustomerService {
       const customer = this._customerRepository.create({
         ...dto,
         user,
+        created_by: metaToken.name,
       });
 
       const savedCustomer = await queryRunner.manager.save(
@@ -119,7 +121,11 @@ export class CustomerService {
     };
   }
 
-  async update(id: number, dto: UpdateCustomerDto): Promise<CustomerEntity> {
+  async update(
+    id: number,
+    dto: UpdateCustomerDto,
+    metaToken: TokenJWTPayload,
+  ): Promise<CustomerEntity> {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -141,6 +147,8 @@ export class CustomerService {
         throw new NotFoundException('Cliente nao encontrado');
       }
 
+      customer.updated_by = metaToken.name;
+
       Object.assign(customer, dto);
 
       if (dto.password) {
@@ -159,7 +167,10 @@ export class CustomerService {
     }
   }
 
-  async delete(id: number): Promise<CustomerEntity> {
+  async delete(
+    id: number,
+    metaToken: TokenJWTPayload,
+  ): Promise<CustomerEntity> {
     const customer = await this._customerRepository.findOne({ where: { id } });
 
     if (!customer) {
@@ -168,6 +179,7 @@ export class CustomerService {
 
     await this._customerRepository.update(id, {
       deleted_at: new Date(),
+      deleted_by: metaToken.name,
     });
 
     return customer;

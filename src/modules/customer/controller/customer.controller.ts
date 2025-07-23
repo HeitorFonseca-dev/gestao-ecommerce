@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
@@ -18,26 +19,33 @@ import { CreateCustomerDto, UpdateCustomerDto } from '../dto/customer.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
 import { CustomerService } from '../services/customer.service';
+import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 
 @ApiTags('customer')
 @Controller('customer')
 export class CustomerController {
-  constructor(private readonly _customerService: CustomerService) {}
+  constructor(
+    private readonly _customerService: CustomerService,
+    private _jwtService: JwtStrategy,
+  ) {}
 
   @Post()
-  async create(@Body() dto: CreateCustomerDto): Promise<ResponseAPI> {
+  async create(
+    @Body() dto: CreateCustomerDto,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    // const metaToken = await this._jwtService.extractToken(
-    //   headers?.authorization,
-    // );
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
 
-    // if (!metaToken) {
-    //   throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
-    // }
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
 
     try {
-      const users = await this._customerService.create(dto);
+      const users = await this._customerService.create(dto, metaToken);
 
       response.data = users;
       response.message = 'Cliente criado com sucesso!';
@@ -119,11 +127,20 @@ export class CustomerController {
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateCustomerDto,
+    @Headers() headers,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
     try {
-      const user = await this._customerService.update(id, dto);
+      const user = await this._customerService.update(id, dto, metaToken);
 
       if (!user || !user.id) {
         throw new HttpException(
@@ -151,10 +168,21 @@ export class CustomerController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<ResponseAPI> {
+  async delete(
+    @Param('id') id: number,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    const user = await this._customerService.delete(id);
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
+    const user = await this._customerService.delete(id, metaToken);
 
     if (user && user.id) {
       response.message = 'Cliente deletado com sucesso';
