@@ -12,32 +12,40 @@ import {
   Patch,
   Post,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
+import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 
 @ApiTags('product')
 @Controller('product')
 export class ProductController {
-  constructor(private readonly _productService: ProductService) {}
+  constructor(
+    private readonly _productService: ProductService,
+    private _jwtService: JwtStrategy,
+  ) {}
 
   @Post()
-  async create(@Body() dto: CreateProductDto): Promise<ResponseAPI> {
+  async create(
+    @Body() dto: CreateProductDto,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    // const metaToken = await this._jwtService.extractToken(
-    //   headers?.authorization,
-    // );
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
 
-    // if (!metaToken) {
-    //   throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
-    // }
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
 
     try {
-      const users = await this._productService.create(dto);
+      const users = await this._productService.create(dto, metaToken);
 
       response.data = users;
       response.message = 'Produto criado com sucesso!';
@@ -119,11 +127,20 @@ export class ProductController {
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateProductDto,
+    @Headers() headers,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
     try {
-      const user = await this._productService.update(id, dto);
+      const user = await this._productService.update(id, dto, metaToken);
 
       if (!user || !user.id) {
         throw new HttpException(
@@ -151,10 +168,21 @@ export class ProductController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<ResponseAPI> {
+  async delete(
+    @Param('id') id: number,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    const user = await this._productService.delete(id);
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
+    const user = await this._productService.delete(id, metaToken);
 
     if (user && user.id) {
       response.message = 'Produto deletado com sucesso';

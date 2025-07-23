@@ -12,6 +12,7 @@ import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
 import { NotFoundException } from '@nestjs/common';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
+import { TokenJWTPayload } from '../../../../auth-lib/src/dto/token-jwt-payload.dto';
 
 export class ProductService {
   constructor(
@@ -21,13 +22,17 @@ export class ProductService {
     private _datasource: DataSource,
   ) {}
 
-  async create(dto: CreateProductDto): Promise<ProductEntity> {
+  async create(
+    dto: CreateProductDto,
+    metaToken: TokenJWTPayload,
+  ): Promise<ProductEntity> {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
       const product = this._productRepository.create(dto);
+      product.created_by = metaToken.name;
       await queryRunner.manager.save(ProductEntity, product);
 
       await queryRunner.commitTransaction();
@@ -104,7 +109,11 @@ export class ProductService {
     };
   }
 
-  async update(id: number, dto: UpdateProductDto): Promise<ProductEntity> {
+  async update(
+    id: number,
+    dto: UpdateProductDto,
+    metaToken: TokenJWTPayload,
+  ): Promise<ProductEntity> {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -116,6 +125,7 @@ export class ProductService {
         throw new NotFoundException('Produto não encontrado');
       }
 
+      product.updated_by = metaToken.name;
       Object.assign(product, dto);
 
       await this._productRepository.save(product);
@@ -130,7 +140,7 @@ export class ProductService {
     }
   }
 
-  async delete(id: number): Promise<ProductEntity> {
+  async delete(id: number, metaToken: TokenJWTPayload): Promise<ProductEntity> {
     const product = await this._productRepository.findOne({ where: { id } });
 
     if (!product) {
@@ -139,6 +149,7 @@ export class ProductService {
 
     await this._productRepository.update(id, {
       deleted_at: new Date(),
+      deleted_by: metaToken.name,
     });
 
     return product;
