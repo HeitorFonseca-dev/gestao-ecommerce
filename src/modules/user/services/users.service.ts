@@ -48,6 +48,7 @@ export class UsersService {
       const user = this._userRepository.create({
         password: password ? await HashToolsUtils.termToHash(password) : null,
         created_by: metaToken.name,
+        is_active: true,
         phone: phone.replace(/\D/g, ''),
         ...rest,
       });
