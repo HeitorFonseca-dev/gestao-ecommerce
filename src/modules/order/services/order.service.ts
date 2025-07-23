@@ -19,6 +19,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { OrderStatus } from '../enum/order-status.enum';
+import { TokenJWTPayload } from '../../../../auth-lib/src/dto/token-jwt-payload.dto';
 
 export class OrderService {
   constructor(
@@ -28,7 +29,10 @@ export class OrderService {
     private _datasource: DataSource,
   ) {}
 
-  async create(dto: CreateOrderDto): Promise<OrderEntity> {
+  async create(
+    dto: CreateOrderDto,
+    metaToken: TokenJWTPayload,
+  ): Promise<OrderEntity> {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -46,6 +50,7 @@ export class OrderService {
         customer: customer,
         status: dto.status,
         total_amount: 0,
+        created_by: metaToken.name,
       });
 
       order = await queryRunner.manager.save(OrderEntity, order);
@@ -66,6 +71,7 @@ export class OrderService {
             quantity: product.quantity,
             unit_price: findProduct.price,
             subtotal: findProduct.price * product.quantity,
+            created_by: metaToken.name,
           });
         }),
       );
@@ -157,7 +163,11 @@ export class OrderService {
     };
   }
 
-  async update(id: number, dto: UpdateOrderDto): Promise<OrderEntity> {
+  async update(
+    id: number,
+    dto: UpdateOrderDto,
+    metaToken: TokenJWTPayload,
+  ): Promise<OrderEntity> {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -203,6 +213,7 @@ export class OrderService {
           existingOrderItem.quantity = product.quantity;
           existingOrderItem.unit_price = findProduct.price;
           existingOrderItem.subtotal = findProduct.price * product.quantity;
+          existingOrderItem.updated_by = metaToken.name;
           await queryRunner.manager.save(OrderItemsEntity, existingOrderItem);
         } else {
           const orderItem = queryRunner.manager.create(OrderItemsEntity, {
@@ -211,6 +222,7 @@ export class OrderService {
             quantity: product.quantity,
             unit_price: findProduct.price,
             subtotal: findProduct.price * product.quantity,
+            created_by: metaToken.name,
           });
           existingOrder.orderItems.push(orderItem);
           await queryRunner.manager.save(OrderItemsEntity, orderItem);
@@ -249,7 +261,7 @@ export class OrderService {
     }
   }
 
-  async delete(id: number): Promise<OrderEntity> {
+  async delete(id: number, metaToken: TokenJWTPayload): Promise<OrderEntity> {
     const order = await this._orderRepository.findOne({ where: { id } });
 
     if (!order) {
@@ -258,6 +270,7 @@ export class OrderService {
 
     await this._orderRepository.update(id, {
       deleted_at: new Date(),
+      deleted_by: metaToken.name,
     });
 
     return order;
