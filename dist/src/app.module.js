@@ -25,6 +25,7 @@ const order_entity_1 = require("./modules/order/entities/order.entity");
 const order_items_entity_1 = require("./modules/order/order-items/entities/order-items.entity");
 const reports_module_1 = require("./modules/reports/reports.module");
 const auth_module_1 = require("../auth-lib/src/auth.module");
+const cart_module_1 = require("./modules/cart/cart.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -60,6 +61,7 @@ exports.AppModule = AppModule = __decorate([
             product_module_1.ProductModule,
             order_module_1.OrderModule,
             reports_module_1.ReportsModule,
+            cart_module_1.CartModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
