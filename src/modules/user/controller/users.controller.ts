@@ -14,13 +14,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
-import { Public } from '../../../config/global.const';
+import { Profiles, Public } from '../../../config/global.const';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
 import { CreateUserDto, UpdateUserDTO } from '../dto/user.dto';
 import { UsersService } from '../services/users.service';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 import { PaginationDTO } from '../../../utils/pagination.dto';
+import { Profile } from '../enum/profiles.enum';
 
 @ApiTags('user')
 @Controller('user')
@@ -62,13 +63,20 @@ export class UsersController {
   }
 
   @Get()
+  @Profiles(Profile.Admin)
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
+    @Headers() headers,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
     const metaPagination = new PaginationDTO(query);
     const queryParams: QueryParamsDTO = query;
 
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    console.log('CHEGOU AQUi', metaToken);
     try {
       const responseAPI = await this._usersService.findAll(
         metaPagination,

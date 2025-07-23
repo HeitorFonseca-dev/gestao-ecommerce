@@ -25,6 +25,9 @@ const order_entity_1 = require("./modules/order/entities/order.entity");
 const order_items_entity_1 = require("./modules/order/order-items/entities/order-items.entity");
 const reports_module_1 = require("./modules/reports/reports.module");
 const auth_module_1 = require("../auth-lib/src/auth.module");
+const core_1 = require("@nestjs/core");
+const profile_guard_1 = require("./guards/profile.guard");
+const jwt_strategy_1 = require("../auth-lib/src/strategy/jwt.strategy");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -62,7 +65,14 @@ exports.AppModule = AppModule = __decorate([
             reports_module_1.ReportsModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [
+            app_service_1.AppService,
+            jwt_strategy_1.JwtStrategy,
+            {
+                provide: core_1.APP_GUARD,
+                useClass: profile_guard_1.ProfileGuard,
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

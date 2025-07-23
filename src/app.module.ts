@@ -15,6 +15,9 @@ import { OrderEntity } from './modules/order/entities/order.entity';
 import { OrderItemsEntity } from './modules/order/order-items/entities/order-items.entity';
 import { ReportsModule } from './modules/reports/reports.module';
 import { AuthModule } from '../auth-lib/src/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { ProfileGuard } from './guards/profile.guard';
+import { JwtStrategy } from '../auth-lib/src/strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -49,6 +52,13 @@ import { AuthModule } from '../auth-lib/src/auth.module';
     ReportsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: ProfileGuard, // depois valida o perfil
+    },
+  ],
 })
 export class AppModule {}
