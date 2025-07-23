@@ -1,4 +1,4 @@
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { OrderService } from '../services/order.service';
 import {
   Body,
@@ -22,6 +22,7 @@ import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
 
 @ApiTags('order')
+@ApiBearerAuth('JWT-auth')
 @Controller('order')
 export class OrderController {
   constructor(

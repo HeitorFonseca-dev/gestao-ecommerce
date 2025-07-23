@@ -12,7 +12,7 @@ import {
   Query,
   Headers,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
 import { Public } from '../../../config/global.const';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
@@ -23,6 +23,7 @@ import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 
 @ApiTags('user')
+@ApiBearerAuth('JWT-auth')
 @Controller('user')
 export class UsersController {
   constructor(
