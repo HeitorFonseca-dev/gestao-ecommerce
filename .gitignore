@@ -64,3 +64,6 @@ test/**/*.ts
 # Javascript files
 src/**/*.js
 src/**/*.js.map
+node_modules
+node_modules
+node_modules

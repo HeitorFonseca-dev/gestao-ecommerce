@@ -12,32 +12,40 @@ import {
   Patch,
   Post,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { QueryParamsDTO } from '../../user/dto/queryParams.dto';
+import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 
 @ApiTags('order')
 @Controller('order')
 export class OrderController {
-  constructor(private readonly _orderService: OrderService) {}
+  constructor(
+    private readonly _orderService: OrderService,
+    private _jwtService: JwtStrategy,
+  ) {}
 
   @Post()
-  async create(@Body() dto: CreateOrderDto): Promise<ResponseAPI> {
+  async create(
+    @Body() dto: CreateOrderDto,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    // const metaToken = await this._jwtService.extractToken(
-    //   headers?.authorization,
-    // );
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
 
-    // if (!metaToken) {
-    //   throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
-    // }
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
 
     try {
-      const order = await this._orderService.create(dto);
+      const order = await this._orderService.create(dto, metaToken);
 
       response.data = order;
       response.message = 'Pedido criado com sucesso!';
@@ -119,11 +127,20 @@ export class OrderController {
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateOrderDto,
+    @Headers() headers,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
     try {
-      const order = await this._orderService.update(id, dto);
+      const order = await this._orderService.update(id, dto, metaToken);
 
       if (!order || !order.id) {
         throw new HttpException(
@@ -152,10 +169,21 @@ export class OrderController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<ResponseAPI> {
+  async delete(
+    @Param('id') id: number,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    const user = await this._orderService.delete(id);
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
+    const user = await this._orderService.delete(id, metaToken);
 
     if (user && user.id) {
       response.message = 'Pedido deletado com sucesso';

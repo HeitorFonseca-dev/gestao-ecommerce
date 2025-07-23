@@ -14,6 +14,7 @@ import { OrderModule } from './modules/order/order.module';
 import { OrderEntity } from './modules/order/entities/order.entity';
 import { OrderItemsEntity } from './modules/order/order-items/entities/order-items.entity';
 import { ReportsModule } from './modules/reports/reports.module';
+import { AuthModule } from '../auth-lib/src/auth.module';
 
 @Module({
   imports: [
@@ -25,9 +26,8 @@ import { ReportsModule } from './modules/reports/reports.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT ?? '5432', 10),
+      port: parseInt(process.env.DATABASE_PORT ?? '25060', 10),
       username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       entities: [
         UserEntity,
@@ -38,9 +38,9 @@ import { ReportsModule } from './modules/reports/reports.module';
       ],
       synchronize: false,
       logging: false,
-      ssl: false,
     }),
-    // AuthModule,
+    AuthModule,
+    DatabaseModule,
     UsersModule,
     DatabaseModule,
     CustomerModule,

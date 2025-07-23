@@ -1,5 +1,5 @@
 export class TokenJWTPayload {
-  sub: string;
+  sub: number | string;
   name: string;
   iss?: string;
   aud?: string;

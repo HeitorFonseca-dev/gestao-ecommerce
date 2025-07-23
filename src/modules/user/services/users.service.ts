@@ -26,7 +26,7 @@ export class UsersService {
 
   async create(
     createUserDto: CreateUserDto,
-    // metaToken: TokenJWTPayload,
+    metaToken: TokenJWTPayload,
   ): Promise<UserEntity> {
     const { password, is_active, phone, ...rest } = createUserDto;
 
@@ -47,7 +47,7 @@ export class UsersService {
 
       const user = this._userRepository.create({
         password: password ? await HashToolsUtils.termToHash(password) : null,
-        // created_by: metaToken.name,
+        created_by: metaToken.name,
         phone: phone.replace(/\D/g, ''),
         ...rest,
       });
@@ -141,7 +141,11 @@ export class UsersService {
     };
   }
 
-  async update(id: number, dto: UpdateUserDTO): Promise<UserEntity> {
+  async update(
+    id: number,
+    dto: UpdateUserDTO,
+    metaToken: TokenJWTPayload,
+  ): Promise<UserEntity> {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -159,6 +163,8 @@ export class UsersService {
         user.password = await HashToolsUtils.termToHash(dto.password);
       }
 
+      user.updated_by = metaToken.name;
+
       await this._userRepository.save(user);
 
       await queryRunner.commitTransaction();
@@ -171,7 +177,7 @@ export class UsersService {
     }
   }
 
-  async delete(id: number): Promise<UserEntity> {
+  async delete(id: number, metaToken: TokenJWTPayload): Promise<UserEntity> {
     const user = await this._userRepository.findOne({ where: { id } });
 
     if (!user) {
@@ -181,6 +187,7 @@ export class UsersService {
     await this._userRepository.update(id, {
       is_active: false,
       deleted_at: new Date(),
+      deleted_by: metaToken.name,
     });
 
     return user;
