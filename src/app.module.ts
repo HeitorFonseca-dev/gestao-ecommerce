@@ -21,6 +21,9 @@ import { OrderItemsEntity } from './modules/order/order-items/entities/order-ite
 import { ReportsModule } from './modules/reports/reports.module';
 import { AuthModule } from '../auth-lib/src/auth.module';
 import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
+import { CartModule } from './modules/cart/cart.module';
+import { CartEntity } from './modules/cart/entities/cart.entity';
+import { CartItemEntity } from './modules/cart/entities/cart-items.entity';
 
 @Module({
   imports: [
@@ -41,6 +44,8 @@ import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
         ProductEntity,
         OrderEntity,
         OrderItemsEntity,
+        CartEntity,
+        CartItemEntity,
       ],
       synchronize: false,
       logging: false,
@@ -53,6 +58,7 @@ import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
     ProductModule,
     OrderModule,
     ReportsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

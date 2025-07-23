@@ -1,43 +1,29 @@
-import {
-  Controller,
-  UseGuards,
-  Get,
-  Post,
-  Delete,
-  Patch,
-  Body,
-  Request,
-  Param,
-} from '@nestjs/common';
-import { AddToCartDTO } from '../dto/cart.dto';
+import { Controller, Get, Post, Delete, Request, Body } from '@nestjs/common';
 import { CartService } from '../services/cart.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('cart')
+@ApiTags('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get()
   getCart(@Request() req) {
-    return this.cartService.getCart(req.user);
-  }
-
-  @Post()
-  addToCart(@Request() req, @Body() dto: AddToCartDTO) {
-    return this.cartService.addToCart(req.user, dto);
-  }
-
-  @Patch()
-  updateQuantity(@Request() req, @Body() dto: AddToCartDTO) {
-    return this.cartService.updateQuantity(req.user, dto);
-  }
-
-  @Delete(':productId')
-  removeItem(@Request() req, @Param('productId') productId: string) {
-    return this.cartService.removeItem(req.user, productId);
+    return this.cartService.getOrCreateCart(req.user);
   }
 
   @Delete()
   clearCart(@Request() req) {
     return this.cartService.clearCart(req.user);
+  }
+
+  @Post('checkout')
+  checkout(@Request() req) {
+    return this.cartService.createOrderFromCart(req.user);
+  }
+
+  @Post('payment')
+  simulatePayment(@Request() req, @Body('approved') approved: boolean) {
+    return this.cartService.processPayment(req.user, approved);
   }
 }

@@ -26,6 +26,8 @@ const order_items_entity_1 = require("./modules/order/order-items/entities/order
 const reports_module_1 = require("./modules/reports/reports.module");
 const auth_module_1 = require("../auth-lib/src/auth.module");
 const cart_module_1 = require("./modules/cart/cart.module");
+const cart_entity_1 = require("./modules/cart/entities/cart.entity");
+const cart_items_entity_1 = require("./modules/cart/entities/cart-items.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,6 +51,8 @@ exports.AppModule = AppModule = __decorate([
                     product_entity_1.ProductEntity,
                     order_entity_1.OrderEntity,
                     order_items_entity_1.OrderItemsEntity,
+                    cart_entity_1.CartEntity,
+                    cart_items_entity_1.CartItemEntity,
                 ],
                 synchronize: false,
                 logging: false,
