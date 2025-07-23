@@ -77,6 +77,10 @@ export class ProductService {
       whereConditions.description = ILike(`%${queryParams.description}%`);
     }
 
+    if (queryParams?.createdBy !== undefined && queryParams.createdBy !== '') {
+      whereConditions.created_by = ILike(`%${queryParams.createdBy}%`);
+    }
+
     const paramsQuery: FindManyOptions<ProductEntity> = {
       where: {
         ...whereConditions,

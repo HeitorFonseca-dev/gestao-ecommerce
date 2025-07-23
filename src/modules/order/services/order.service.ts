@@ -143,7 +143,7 @@ export class OrderService {
         },
       };
     }
-    console.log(whereConditions);
+
     const paramsQuery: FindManyOptions<OrderEntity> = {
       relations: ['orderItems', 'orderItems.product'],
       where: {
