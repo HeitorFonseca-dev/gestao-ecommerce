@@ -38,16 +38,8 @@ export class UsersController {
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    const metaToken = await this._jwtService.extractToken(
-      headers?.authorization,
-    );
-
-    if (!metaToken) {
-      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
-    }
-
     try {
-      const users = await this._usersService.create(dto, metaToken);
+      const users = await this._usersService.create(dto);
 
       response.data = users;
       response.message = 'Usuário criado com sucesso!';

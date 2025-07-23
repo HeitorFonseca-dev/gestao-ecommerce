@@ -26,10 +26,7 @@ export class UsersService {
     private _datasource: DataSource,
   ) {}
 
-  async create(
-    createUserDto: CreateUserDto,
-    metaToken: TokenJWTPayload,
-  ): Promise<UserEntity> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     const { password, is_active, phone, ...rest } = createUserDto;
 
     const queryRunner = this._datasource.createQueryRunner();
@@ -49,7 +46,7 @@ export class UsersService {
 
       const user = this._userRepository.create({
         password: password ? await HashToolsUtils.termToHash(password) : null,
-        created_by: metaToken.name,
+        created_by: createUserDto.name,
         is_active: true,
         phone: phone.replace(/\D/g, ''),
         ...rest,
@@ -126,6 +123,7 @@ export class UsersService {
     }
 
     const paramsQuery: FindManyOptions<UserEntity> = {
+      relations: ['customers'],
       where: {
         ...whereConditions,
         deleted_at: IsNull(),
