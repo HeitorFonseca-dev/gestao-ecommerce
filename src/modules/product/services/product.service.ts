@@ -46,18 +46,18 @@ export class ProductService {
   }
 
   async findOne(id: number): Promise<ProductEntity> {
-    const customer = await this._productRepository.findOne({
+    const product = await this._productRepository.findOne({
       where: {
         id: id,
         deleted_at: IsNull(),
       },
     });
 
-    if (!customer) {
+    if (!product) {
       throw new NotFoundException('Produto não encontrado');
     }
 
-    return customer;
+    return product;
   }
 
   async findAll(metaPagination: PaginationDTO, queryParams?: QueryParamsDTO) {
