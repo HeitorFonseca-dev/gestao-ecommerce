@@ -30,6 +30,11 @@ async function bootstrap() {
 
   // app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
 
+  //TODO Integração com serviço de envio de email
+  //TODO Criar permissionamentos de rotas
+  //TODO Criar docker e docker compose
+  //TODO Criar carrinho de compras de preferencia um redis no docker
+
   await app.listen(3000);
 }
 
