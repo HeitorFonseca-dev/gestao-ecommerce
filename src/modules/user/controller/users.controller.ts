@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
@@ -30,19 +31,22 @@ export class UsersController {
   ) {}
 
   @Post()
-  async create(@Body() dto: CreateUserDto): Promise<ResponseAPI> {
+  async create(
+    @Body() dto: CreateUserDto,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    // const metaToken = await this._jwtService.extractToken(
-    //   headers?.authorization,
-    // );
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
 
-    // if (!metaToken) {
-    //   throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
-    // }
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
 
     try {
-      const users = await this._usersService.create(dto);
+      const users = await this._usersService.create(dto, metaToken);
 
       response.data = users;
       response.message = 'Usuário criado com sucesso!';
@@ -124,11 +128,20 @@ export class UsersController {
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateUserDTO,
+    @Headers() headers,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
     try {
-      const user = await this._usersService.update(id, dto);
+      const user = await this._usersService.update(id, dto, metaToken);
 
       if (!user || !user.id) {
         throw new HttpException(
@@ -156,10 +169,21 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<ResponseAPI> {
+  async delete(
+    @Param('id') id: number,
+    @Headers() headers,
+  ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    const user = await this._usersService.delete(id);
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
+
+    if (!metaToken) {
+      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
+    }
+
+    const user = await this._usersService.delete(id, metaToken);
 
     if (user && user.id) {
       response.message = 'Usuário deletado com sucesso';
