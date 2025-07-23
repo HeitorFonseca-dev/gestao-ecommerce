@@ -27,7 +27,7 @@ export class CustomerService {
     private _datasource: DataSource,
   ) {}
 
-  async create(dto: CreateCustomerDto, metaToken: TokenJWTPayload) {
+  async create(dto: CreateCustomerDto) {
     const queryRunner = this._datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -43,7 +43,7 @@ export class CustomerService {
       const customer = this._customerRepository.create({
         ...dto,
         user,
-        created_by: metaToken.name,
+        created_by: user.name,
       });
 
       const savedCustomer = await queryRunner.manager.save(
