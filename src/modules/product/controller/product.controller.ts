@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ProductService } from '../services/product.service';
 import {
   Body,
@@ -61,8 +61,10 @@ export class ProductController {
   }
 
   @Get()
+  @ApiQuery({ type: QueryParamsDTO })
   async findAll(
-    @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
+    @Query()
+    query: Partial<PaginationDTO> & Partial<QueryParamsDTO> & QueryParamsDTO,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
     const metaPagination = new PaginationDTO(query);

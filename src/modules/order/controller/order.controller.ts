@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { OrderService } from '../services/order.service';
 import {
   Body,
@@ -61,6 +61,7 @@ export class OrderController {
   }
 
   @Get()
+  @ApiQuery({ type: QueryParamsDTO })
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
   ): Promise<ResponseAPI> {

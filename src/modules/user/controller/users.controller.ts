@@ -12,7 +12,7 @@ import {
   Query,
   Headers,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
 import { Public } from '../../../config/global.const';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
@@ -55,6 +55,7 @@ export class UsersController {
   }
 
   @Get()
+  @ApiQuery({ type: QueryParamsDTO })
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
   ): Promise<ResponseAPI> {
