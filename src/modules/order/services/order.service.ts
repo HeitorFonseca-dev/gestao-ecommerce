@@ -5,6 +5,7 @@ import {
   IsNull,
   FindOptionsWhere,
   FindManyOptions,
+  ILike,
 } from 'typeorm';
 import { OrderEntity } from '../entities/order.entity';
 import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
@@ -20,6 +21,7 @@ import {
 } from '@nestjs/common';
 import { OrderStatus } from '../enum/order-status.enum';
 import { TokenJWTPayload } from '../../../../auth-lib/src/dto/token-jwt-payload.dto';
+import { QueryParamsDTO } from '../dto/queryParams.dto';
 
 export class OrderService {
   constructor(
@@ -127,9 +129,21 @@ export class OrderService {
     return user;
   }
 
-  async findAll(metaPagination: PaginationDTO, queryParams?: any) {
+  async findAll(metaPagination: PaginationDTO, queryParams?: QueryParamsDTO) {
     const whereConditions: FindOptionsWhere<OrderEntity> = {};
 
+    if (queryParams?.status !== undefined && queryParams.status !== '') {
+      whereConditions.status = queryParams.status;
+    }
+
+    if (queryParams?.items !== undefined && queryParams.items !== '') {
+      whereConditions.orderItems = {
+        product: {
+          product_name: ILike(`%${queryParams.items}%`),
+        },
+      };
+    }
+    console.log(whereConditions);
     const paramsQuery: FindManyOptions<OrderEntity> = {
       relations: ['orderItems', 'orderItems.product'],
       where: {

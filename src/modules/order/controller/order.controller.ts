@@ -18,8 +18,8 @@ import { instanceToPlain } from 'class-transformer';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
-import { QueryParamsDTO } from '../../user/dto/queryParams.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
+import { QueryParamsDTO } from '../dto/queryParams.dto';
 
 @ApiTags('order')
 @Controller('order')
