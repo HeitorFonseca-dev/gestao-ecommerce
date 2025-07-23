@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { JwtStrategy } from '../strategy/jwt.strategy';
 import { TokenJWT } from '../tokenJWT.dto';
@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { ResponseAPI } from '../../../src/utils/responseAPI.dto';
 import { Controller, HttpStatus, Post, Body, Res } from '@nestjs/common';
 import { Public } from '../../../src/config/global.const';
+import { CredentialsDTO } from '../auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -16,8 +17,9 @@ export class AuthController {
   ) {}
 
   @Public()
+  @ApiQuery({ type: CredentialsDTO })
   @Post('signIn')
-  async signIn(@Body() credenciaisDTO: any, @Res() res: Response) {
+  async signIn(@Body() credenciaisDTO: CredentialsDTO, @Res() res: Response) {
     const response = new ResponseAPI();
 
     await this._authService

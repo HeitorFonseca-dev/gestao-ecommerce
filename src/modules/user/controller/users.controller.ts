@@ -12,7 +12,7 @@ import {
   Query,
   Headers,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
 import { Profiles, Public } from '../../../config/global.const';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
@@ -24,6 +24,7 @@ import { PaginationDTO } from '../../../utils/pagination.dto';
 import { Profile } from '../enum/profiles.enum';
 
 @ApiTags('user')
+@ApiBearerAuth('JWT-auth')
 @Controller('user')
 export class UsersController {
   constructor(
@@ -31,6 +32,7 @@ export class UsersController {
     private _jwtService: JwtStrategy,
   ) {}
 
+  @Public()
   @Post()
   async create(
     @Body() dto: CreateUserDto,
@@ -38,16 +40,8 @@ export class UsersController {
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
 
-    const metaToken = await this._jwtService.extractToken(
-      headers?.authorization,
-    );
-
-    if (!metaToken) {
-      throw new HttpException('Nao autorizado', HttpStatus.FORBIDDEN);
-    }
-
     try {
-      const users = await this._usersService.create(dto, metaToken);
+      const users = await this._usersService.create(dto);
 
       response.data = users;
       response.message = 'Usuário criado com sucesso!';
@@ -63,7 +57,11 @@ export class UsersController {
   }
 
   @Get()
+<<<<<<< HEAD
   @Profiles(Profile.Admin)
+=======
+  @ApiQuery({ type: QueryParamsDTO })
+>>>>>>> master
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
     @Headers() headers,

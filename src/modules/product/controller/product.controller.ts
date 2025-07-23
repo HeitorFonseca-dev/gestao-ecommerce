@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ProductService } from '../services/product.service';
 import {
   Body,
@@ -22,6 +22,7 @@ import { QueryParamsDTO } from '../dto/queryParams.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 
 @ApiTags('product')
+@ApiBearerAuth('JWT-auth')
 @Controller('product')
 export class ProductController {
   constructor(
@@ -61,8 +62,10 @@ export class ProductController {
   }
 
   @Get()
+  @ApiQuery({ type: QueryParamsDTO })
   async findAll(
-    @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
+    @Query()
+    query: Partial<PaginationDTO> & Partial<QueryParamsDTO> & QueryParamsDTO,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
     const metaPagination = new PaginationDTO(query);

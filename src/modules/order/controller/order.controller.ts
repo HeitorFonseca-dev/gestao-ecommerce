@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { OrderService } from '../services/order.service';
 import {
   Body,
@@ -18,10 +18,11 @@ import { instanceToPlain } from 'class-transformer';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
-import { QueryParamsDTO } from '../../user/dto/queryParams.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
+import { QueryParamsDTO } from '../dto/queryParams.dto';
 
 @ApiTags('order')
+@ApiBearerAuth('JWT-auth')
 @Controller('order')
 export class OrderController {
   constructor(
@@ -61,6 +62,7 @@ export class OrderController {
   }
 
   @Get()
+  @ApiQuery({ type: QueryParamsDTO })
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
   ): Promise<ResponseAPI> {
