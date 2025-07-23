@@ -15,6 +15,8 @@ import { UserEntity } from '../entities/user.entity';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { TokenJWTPayload } from '../../../../auth-lib/src/dto/token-jwt-payload.dto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Profiles } from '../enum/profiles.enum';
+import { CustomerEntity } from '../../customer/entities/customer.entity';
 
 export class UsersService {
   constructor(
@@ -54,6 +56,19 @@ export class UsersService {
       });
 
       const savedUser = await queryRunner.manager.save(UserEntity, user);
+
+      if (createUserDto.role === Profiles.Customer) {
+        const customer = queryRunner.manager.create(CustomerEntity, {
+          user: { id: savedUser.id },
+          contact: createUserDto.customer.contact,
+          address: createUserDto.customer.address,
+          name: createUserDto.customer.name,
+          status: true,
+          created_by: savedUser.name,
+        });
+
+        await queryRunner.manager.save(CustomerEntity, customer);
+      }
 
       await queryRunner.commitTransaction();
 

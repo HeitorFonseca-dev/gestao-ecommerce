@@ -30,6 +30,7 @@ export class UsersController {
     private _jwtService: JwtStrategy,
   ) {}
 
+  @Public()
   @Post()
   async create(
     @Body() dto: CreateUserDto,
