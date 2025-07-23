@@ -2,6 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 import { Profiles } from '../enum/profiles.enum';
 
+interface Customer {
+  userId: number;
+  name: string;
+  contact: string;
+  address: string;
+  status: boolean;
+}
 export class CreateUserDto {
   @ApiProperty()
   @IsOptional()
@@ -26,6 +33,10 @@ export class CreateUserDto {
   @ApiProperty()
   @IsOptional()
   password: string;
+
+  @ApiProperty()
+  @IsOptional()
+  customer: Customer;
 }
 
 export class UpdateUserDTO extends CreateUserDto {}

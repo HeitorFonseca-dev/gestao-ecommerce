@@ -12,7 +12,7 @@ import {
   Query,
   Headers,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dto/customer.dto';
@@ -22,6 +22,7 @@ import { CustomerService } from '../services/customer.service';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 
 @ApiTags('customer')
+@ApiBearerAuth('JWT-auth')
 @Controller('customer')
 export class CustomerController {
   constructor(

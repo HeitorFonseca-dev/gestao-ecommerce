@@ -4,7 +4,7 @@ import { BaseEntity } from '../../../database/base/base.entity';
 
 @Entity('customer')
 export class CustomerEntity extends BaseEntity {
-  @OneToOne(() => UserEntity, { eager: true, nullable: false })
+  @OneToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 

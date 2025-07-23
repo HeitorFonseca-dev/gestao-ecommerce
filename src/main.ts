@@ -11,10 +11,21 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('App title')
-    .setDescription('API - Sistem')
-    .setVersion('0.1.0')
+    .setTitle('Nome da API')
+    .setDescription('Descrição da API')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
 
@@ -29,6 +40,11 @@ async function bootstrap() {
   );
 
   // app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
+
+  //TODO Integração com serviço de envio de email
+  //TODO Criar permissionamentos de rotas
+  //TODO Criar docker e docker compose
+  //TODO Criar carrinho de compras de preferencia um redis no docker
 
   await app.listen(3000);
 }
