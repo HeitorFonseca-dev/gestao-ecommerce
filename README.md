@@ -15,3 +15,13 @@ preciso de orientação de como rodar o redis dentro do docker
 preciso de orientação de como documentar no swagger os campos obrigatórios dos filtros do metodo getAll ( nunca tinha feito isso, foi uma experiência bacana aprender algo novo)
 
 Geralmente eu utilizo IA para tarefas simples ou repetitivas como criar entidades e DTO.
+
+variaveis utilizadas para acesso ao banco:
+nome do env: .env.development (necessário ter atenção que começa com o .env.)
+
+#database
+DATABASE_HOST=localhost
+DATABASE_USER=admin-loomi
+DATABASE_PASSWORD=loomi2025
+DATABASE_NAME=loomi-ecommerce
+DATABASE_PORT=5432
