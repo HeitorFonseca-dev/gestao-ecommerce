@@ -1,6 +1,6 @@
 import { Column, Entity, OneToOne } from 'typeorm';
 import { BaseEntity } from '../../../database/base/base.entity';
-import { Profiles } from '../enum/profiles.enum';
+import { Profile } from '../enum/profiles.enum';
 import { Exclude } from 'class-transformer';
 import { CustomerEntity } from '../../customer/entities/customer.entity';
 
@@ -19,7 +19,7 @@ export class UserEntity extends BaseEntity {
   is_active: boolean;
 
   @Column({ type: 'varchar', length: 30, nullable: false })
-  role: Profiles;
+  role: Profile;
 
   @Exclude()
   @Column({ type: 'varchar', nullable: true })

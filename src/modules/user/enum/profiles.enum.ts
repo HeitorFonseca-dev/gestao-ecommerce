@@ -1,4 +1,4 @@
-export enum Profiles {
+export enum Profile {
   Admin = 'Admin',
   Customer = 'Customer',
 }

@@ -15,6 +15,7 @@ export interface TokenJWT {
   iss?: string;
   aud?: string;
   iat?: number;
+  role?: string;
   accessToken?: string | null;
   refreshToken?: string | null;
 }
@@ -72,7 +73,9 @@ export class AuthService {
       iss: this._configService.get<string>('core.apiNomeCore'),
       aud: this._configService.get<string>('core.clientAppUrl'),
       iat: Math.floor(Date.now() / 1000),
+      role: user.role,
     };
+
     const token: TokenJWT = {
       accessToken: (
         await this.jwtService.generateJwtToken(payloadData)

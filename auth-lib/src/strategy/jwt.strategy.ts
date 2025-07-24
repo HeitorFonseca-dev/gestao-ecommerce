@@ -36,4 +36,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       .then((tokenDecoded: TokenJWTPayload) => tokenDecoded)
       .catch(() => null);
   }
+
+  public async validate(payload: TokenJWTPayload): Promise<TokenJWTPayload> {
+    if (!payload) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+    return {
+      sub: payload.sub,
+      name: payload.name,
+      role: payload.role,
+    };
+  }
 }

@@ -7,12 +7,12 @@ export const corsConfig = () => {
     development: {
       origin: '*', // Permitir todas as origens no ambiente de desenvolvimento
       methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTION',
-      allowedHeaders: ['Content-Type', 'Authorization', 'storeid', 'storeId'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     },
     production: {
       origin: [client_app_url], // Domínio da aplicação em produção
       methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTION',
-      allowedHeaders: ['Content-Type', 'Authorization', 'storeid', 'storeId'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     },
   };
 
