@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
-import { Profiles } from '../enum/profiles.enum';
+import { Profile } from '../enum/profiles.enum';
 
 interface Customer {
   userId: number;
@@ -20,7 +20,7 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsOptional()
-  role: Profiles;
+  role: Profile;
 
   @ApiProperty()
   @IsOptional()

@@ -14,13 +14,14 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { instanceToPlain } from 'class-transformer';
-import { Public } from '../../../config/global.const';
+import { Profiles, Public } from '../../../config/global.const';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
 import { CreateUserDto, UpdateUserDTO } from '../dto/user.dto';
 import { UsersService } from '../services/users.service';
 import { ResponseAPI } from '../../../utils/responseAPI.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 import { PaginationDTO } from '../../../utils/pagination.dto';
+import { Profile } from '../enum/profiles.enum';
 
 @ApiTags('user')
 @ApiBearerAuth('JWT-auth')
@@ -56,13 +57,19 @@ export class UsersController {
   }
 
   @Get()
+  @Profiles(Profile.Admin)
   @ApiQuery({ type: QueryParamsDTO })
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
+    @Headers() headers,
   ): Promise<ResponseAPI> {
     const response = new ResponseAPI();
     const metaPagination = new PaginationDTO(query);
     const queryParams: QueryParamsDTO = query;
+
+    const metaToken = await this._jwtService.extractToken(
+      headers?.authorization,
+    );
 
     try {
       const responseAPI = await this._usersService.findAll(
@@ -94,6 +101,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @Profiles(Profile.Admin)
   async findOne(@Param('id') id: number): Promise<ResponseAPI> {
     try {
       const user = await this._usersService.findOne(id);
@@ -120,6 +128,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @Profiles(Profile.Admin, Profile.Customer)
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateUserDTO,
@@ -164,6 +173,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Profiles(Profile.Admin)
   async delete(
     @Param('id') id: number,
     @Headers() headers,

@@ -4,5 +4,6 @@ export class TokenJWTPayload {
   iss?: string;
   aud?: string;
   iat?: number;
+  role?: string;
   data?: [];
 }

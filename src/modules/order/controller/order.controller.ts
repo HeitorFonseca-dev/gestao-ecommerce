@@ -20,6 +20,8 @@ import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
+import { Profiles } from '../../../config/global.const';
+import { Profile } from '../../user/enum/profiles.enum';
 
 @ApiTags('order')
 @ApiBearerAuth('JWT-auth')
@@ -31,6 +33,7 @@ export class OrderController {
   ) {}
 
   @Post()
+  @Profiles(Profile.Admin, Profile.Customer)
   async create(
     @Body() dto: CreateOrderDto,
     @Headers() headers,
@@ -62,6 +65,7 @@ export class OrderController {
   }
 
   @Get()
+  @Profiles(Profile.Admin)
   @ApiQuery({ type: QueryParamsDTO })
   async findAll(
     @Query() query: Partial<PaginationDTO> & Partial<QueryParamsDTO>,
@@ -100,6 +104,7 @@ export class OrderController {
   }
 
   @Get(':id')
+  @Profiles(Profile.Admin, Profile.Customer)
   async findOne(@Param('id') id: number): Promise<ResponseAPI> {
     try {
       const user = await this._orderService.findOne(id);
@@ -126,6 +131,7 @@ export class OrderController {
   }
 
   @Patch(':id')
+  @Profiles(Profile.Admin, Profile.Customer)
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateOrderDto,
@@ -171,6 +177,7 @@ export class OrderController {
   }
 
   @Delete(':id')
+  @Profiles(Profile.Admin, Profile.Customer)
   async delete(
     @Param('id') id: number,
     @Headers() headers,
