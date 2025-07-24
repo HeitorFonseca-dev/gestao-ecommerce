@@ -8,6 +8,8 @@ const customer_entity_1 = require("../../modules/customer/entities/customer.enti
 const product_entity_1 = require("../../modules/product/entities/product.entity");
 const order_entity_1 = require("../../modules/order/entities/order.entity");
 const order_items_entity_1 = require("../../modules/order/order-items/entities/order-items.entity");
+const cart_entity_1 = require("../../modules/cart/entities/cart.entity");
+const cart_items_entity_1 = require("../../modules/cart/entities/cart-items.entity");
 (0, dotenv_1.config)({ path: `.env.${process.env.NODE_ENV}` });
 const PORT = process.env.DATABASE_PORT || '25060';
 exports.AppDataSource = new typeorm_1.DataSource({
@@ -24,6 +26,8 @@ exports.AppDataSource = new typeorm_1.DataSource({
         order_entity_1.OrderEntity,
         product_entity_1.ProductEntity,
         order_items_entity_1.OrderItemsEntity,
+        cart_entity_1.CartEntity,
+        cart_items_entity_1.CartItemEntity,
     ],
     migrations: ['dist/src/database/migrations/**/*.js'],
     logging: process.env.LOGGING === 'true',

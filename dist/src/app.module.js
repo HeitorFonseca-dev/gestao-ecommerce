@@ -29,6 +29,9 @@ const core_1 = require("@nestjs/core");
 const profile_guard_1 = require("./guards/profile.guard");
 const jwt_strategy_1 = require("../auth-lib/src/strategy/jwt.strategy");
 const auth_guard_1 = require("../auth-lib/src/guard/auth.guard");
+const cart_module_1 = require("./modules/cart/cart.module");
+const cart_entity_1 = require("./modules/cart/entities/cart.entity");
+const cart_items_entity_1 = require("./modules/cart/entities/cart-items.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -52,6 +55,8 @@ exports.AppModule = AppModule = __decorate([
                     product_entity_1.ProductEntity,
                     order_entity_1.OrderEntity,
                     order_items_entity_1.OrderItemsEntity,
+                    cart_entity_1.CartEntity,
+                    cart_items_entity_1.CartItemEntity,
                 ],
                 synchronize: false,
                 logging: false,
@@ -64,6 +69,7 @@ exports.AppModule = AppModule = __decorate([
             product_module_1.ProductModule,
             order_module_1.OrderModule,
             reports_module_1.ReportsModule,
+            cart_module_1.CartModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

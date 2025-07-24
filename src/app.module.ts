@@ -24,6 +24,9 @@ import { APP_GUARD } from '@nestjs/core';
 import { ProfileGuard } from './guards/profile.guard';
 import { JwtStrategy } from '../auth-lib/src/strategy/jwt.strategy';
 import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
+import { CartModule } from './modules/cart/cart.module';
+import { CartEntity } from './modules/cart/entities/cart.entity';
+import { CartItemEntity } from './modules/cart/entities/cart-items.entity';
 
 @Module({
   imports: [
@@ -44,6 +47,8 @@ import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
         ProductEntity,
         OrderEntity,
         OrderItemsEntity,
+        CartEntity,
+        CartItemEntity,
       ],
       synchronize: false,
       logging: false,
@@ -56,6 +61,7 @@ import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
     ProductModule,
     OrderModule,
     ReportsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [
