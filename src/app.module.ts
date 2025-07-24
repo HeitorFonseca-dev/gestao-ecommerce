@@ -23,6 +23,7 @@ import { AuthModule } from '../auth-lib/src/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ProfileGuard } from './guards/profile.guard';
 import { JwtStrategy } from '../auth-lib/src/strategy/jwt.strategy';
+import { AuthGuard } from '../auth-lib/src/guard/auth.guard';
 
 @Module({
   imports: [
@@ -60,6 +61,10 @@ import { JwtStrategy } from '../auth-lib/src/strategy/jwt.strategy';
   providers: [
     AppService,
     JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard, // primeiro o guard JWT global
+    },
     {
       provide: APP_GUARD,
       useClass: ProfileGuard, // depois valida o perfil

@@ -78,11 +78,8 @@ export class GenerateReportsService {
         ([, a], [, b]) => b.quantity - a.quantity,
       );
 
-      const bestSellingProduct = sortedProducts[0];
-      const worstSellingProduct = sortedProducts[sortedProducts.length - 1];
-
-      console.log('Best selling product:', bestSellingProduct);
-      console.log('Worst selling product:', worstSellingProduct);
+      // const bestSellingProduct = sortedProducts[0];
+      // const worstSellingProduct = sortedProducts[sortedProducts.length - 1];
 
       const outputFilePath = path.join(
         process.cwd(), // raiz do projeto (onde fica o src/)

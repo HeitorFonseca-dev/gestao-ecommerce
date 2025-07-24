@@ -71,7 +71,6 @@ export class UsersController {
       headers?.authorization,
     );
 
-    console.log('CHEGOU AQUi', metaToken);
     try {
       const responseAPI = await this._usersService.findAll(
         metaPagination,

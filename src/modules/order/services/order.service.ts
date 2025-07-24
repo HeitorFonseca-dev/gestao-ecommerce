@@ -285,6 +285,7 @@ export class OrderService {
     await this._orderRepository.update(id, {
       deleted_at: new Date(),
       deleted_by: metaToken.name,
+      customer: { id: order.customer.id },
     });
 
     return order;

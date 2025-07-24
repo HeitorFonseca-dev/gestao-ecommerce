@@ -20,6 +20,8 @@ import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
 import { PaginationDTO } from '../../../utils/pagination.dto';
 import { QueryParamsDTO } from '../dto/queryParams.dto';
 import { JwtStrategy } from '../../../../auth-lib/src/strategy/jwt.strategy';
+import { Profiles } from '../../../config/global.const';
+import { Profile } from '../../user/enum/profiles.enum';
 
 @ApiTags('product')
 @ApiBearerAuth('JWT-auth')
@@ -31,6 +33,7 @@ export class ProductController {
   ) {}
 
   @Post()
+  @Profiles(Profile.Admin)
   async create(
     @Body() dto: CreateProductDto,
     @Headers() headers,
@@ -62,6 +65,7 @@ export class ProductController {
   }
 
   @Get()
+  @Profiles(Profile.Admin, Profile.Customer)
   @ApiQuery({ type: QueryParamsDTO })
   async findAll(
     @Query()
@@ -101,6 +105,7 @@ export class ProductController {
   }
 
   @Get(':id')
+  @Profiles(Profile.Admin, Profile.Customer)
   async findOne(@Param('id') id: number): Promise<ResponseAPI> {
     try {
       const user = await this._productService.findOne(id);
@@ -127,6 +132,7 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @Profiles(Profile.Admin)
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateProductDto,
@@ -171,6 +177,7 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @Profiles(Profile.Admin)
   async delete(
     @Param('id') id: number,
     @Headers() headers,

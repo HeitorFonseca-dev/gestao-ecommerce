@@ -15,6 +15,7 @@ export interface TokenJWT {
   iss?: string;
   aud?: string;
   iat?: number;
+  role?: string;
   accessToken?: string | null;
   refreshToken?: string | null;
 }
@@ -74,6 +75,7 @@ export class AuthService {
       iat: Math.floor(Date.now() / 1000),
       role: user.role,
     };
+
     const token: TokenJWT = {
       accessToken: (
         await this.jwtService.generateJwtToken(payloadData)

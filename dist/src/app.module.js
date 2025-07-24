@@ -28,6 +28,7 @@ const auth_module_1 = require("../auth-lib/src/auth.module");
 const core_1 = require("@nestjs/core");
 const profile_guard_1 = require("./guards/profile.guard");
 const jwt_strategy_1 = require("../auth-lib/src/strategy/jwt.strategy");
+const auth_guard_1 = require("../auth-lib/src/guard/auth.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -68,6 +69,10 @@ exports.AppModule = AppModule = __decorate([
         providers: [
             app_service_1.AppService,
             jwt_strategy_1.JwtStrategy,
+            {
+                provide: core_1.APP_GUARD,
+                useClass: auth_guard_1.AuthGuard,
+            },
             {
                 provide: core_1.APP_GUARD,
                 useClass: profile_guard_1.ProfileGuard,

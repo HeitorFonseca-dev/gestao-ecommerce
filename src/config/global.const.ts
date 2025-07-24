@@ -6,5 +6,4 @@ export const Public = () => SetMetadata('IS_ROUTE_PUBLIC', true);
 
 export const ROLES_KEY = 'roles';
 
-export const Profiles = (...perfis: Profile[]) =>
-  SetMetadata(ROLES_KEY, perfis);
+export const Profiles = (...role: Profile[]) => SetMetadata(ROLES_KEY, role);
