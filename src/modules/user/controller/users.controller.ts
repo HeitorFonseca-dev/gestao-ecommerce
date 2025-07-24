@@ -101,6 +101,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @Profiles(Profile.Admin)
   async findOne(@Param('id') id: number): Promise<ResponseAPI> {
     try {
       const user = await this._usersService.findOne(id);
@@ -127,6 +128,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @Profiles(Profile.Admin, Profile.Customer)
   async update(
     @Param('id') id: number,
     @Body() dto: UpdateUserDTO,
@@ -171,6 +173,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Profiles(Profile.Admin)
   async delete(
     @Param('id') id: number,
     @Headers() headers,
